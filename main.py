@@ -21,10 +21,11 @@ from prettytable import PrettyTable
 
 # element tuple :
 # element 0 = presensi ----> bobot 10%
-# element 1 = nilai tugas ---> bobot 20%
-# element 2 = nilai UTS ---> bobot 30%
-# element 3 = nilai UAS ----> bobot 40%
+# element 1 = nilai tugas ---> bobot 30%
+# element 2 = nilai UTS ---> bobot 25%
+# element 3 = nilai UAS ----> bobot 35%
 
+# data nilai presensi, tugas, uts, uas, nama mahasiswa
 student_data = {
     (100, 70, 77, 90, "Hikmah"), (100, 85, 87, 90, "Kiel"), (100, 75, 80, 72, "Eleven"), (100, 86, 81, 75, "Shodik"), (100, 79, 75, 80, "Satrio"),
     (90, 85, 88, 75, "Fadh"), (100, 80, 89, 83, "Nanda"), (80, 70, 70, 87, "Wildan"), (100, 80, 77, 94, "Adel"), (100, 87, 78, 87, "Andriawan"),
@@ -39,7 +40,7 @@ student_data = {
 }
 
 # hitung nilai keseluruhan data
-total_grade = sorted(list(map(lambda x: (((x[0] * 0.10) + (x[1] * 0.20) + (x[2] * 0.30) + (x[3] * 0.40)), x[4]), student_data)), reverse=True)
+total_grade = sorted(list(map(lambda x: (((x[0] * 0.10) + (x[1] * 0.30) + (x[2] * 0.25) + (x[3] * 0.35)), x[4]), student_data)), reverse=True)
 
 # jumlahkan semua nilai di total grade
 jumlah = functools.reduce(operator.add, [x[0] for x in total_grade])
@@ -53,7 +54,7 @@ def show_data(data_arg) :
     data_table = PrettyTable()
     data_table.field_names = ['Nama', 'Nilai']
     print('============== Data Nilai Akhir =============')
-    t_grade = [[j, i] for i, j in data_arg]
+    t_grade = [[j, round(i, 1)] for i, j in data_arg]
     for i in t_grade:
         data_table.add_rows([i])
     print(data_table)
@@ -62,7 +63,7 @@ def show_data(data_arg) :
 def show_menu():
     clear()
     print("=======================================================")
-    print("= Hasil Akhir Nilai Mata Kuliah Algoritma Pemrograman =")
+    print("=   Hasil Akhir Nilai Mata Kuliah Bahasa Indonesia    =")
     print("=======================================================")
     print("= 1. Tampil Data                                      =")
     print("= 2. Cari Data                                        =")
@@ -84,30 +85,30 @@ def back_menu():
 def entry_point():
     while True:
         pilihan = show_menu()
-        if (pilihan == "1"):
+        if (pilihan == "1"): # pilihan pertama tampilkan seluruh data
             clear()
             show_data(total_grade)
             back_menu()
-        elif (pilihan == "2"):
+        elif (pilihan == "2"): # pilihan kedua cari data berdasarkan nama
             clear()
             key = input("Masukkan nama : ") # key pencarian
-            cari = list(filter(lambda x: x if x[1] == key else False, total_grade)) # cari berdasarkan eleme1n ke-1
+            cari = list(filter(lambda x: x if x[1] == key else False, total_grade)) # cari berdasarkan elemen ke-1
             show_data(cari)
             back_menu()
-        elif (pilihan == "3"):
+        elif (pilihan == "3"): # cari nilai maksimum data, tampilkan nama dan nilai
             clear()
-            maximum_val = max(total_grade, key=lambda x: x[0]) # cari nilai maksimum berdasarkan elemen ke-0
+            maximum_val = max(total_grade, key=lambda x: x[0])  # cari nilai maksimum berdasarkan elemen ke-0
             maximum_val = [maximum_val]
             print("=========== nilai tertinggi ============")
             show_data(maximum_val)
             back_menu()
-        elif (pilihan == "4"):
+        elif (pilihan == "4"): # cari nilai minimum data, tampilkan nama dan nilai
             clear()
-            minimum_val = min(total_grade, key=lambda x: x[0]) # cari nilai minimum berdasarkan elemen ke-0
+            minimum_val = min(total_grade, key=lambda x: x[0])  # cari nilai minimum berdasarkan elemen ke-0
             minimum_val = [minimum_val]
             show_data(minimum_val)
             back_menu()
-        elif (pilihan == "5"):
+        elif (pilihan == "5"): # cari nilai rata-rata semua data
             clear()
             table_rerata = PrettyTable()
             table_rerata.field_names = ['Rata - rata']
@@ -116,9 +117,9 @@ def entry_point():
             table_rerata.add_row([rerata])
             print(table_rerata)
             back_menu()
-        elif(pilihan == "6"):
-            exit()
+        elif(pilihan == "6"): # keluar dari program
             print("Program keluar")
+            exit()
         else:
             print("Pilihan tidak tersedia") # jika pilihan tidak tersedia
             back_menu()
